@@ -1,12 +1,22 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using System.Data;
-using System.Security.Cryptography.Xml;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using PromoCodeFactory.Application.DatabaseContext;
+using PromoCodeFactory.Application.Repositories;
+using PromoCodeFactory.Domain.Abstractions;
+using PromoCodeFactory.Domain.Models.Administration;
+using PromoCodeFactory.Domain.Models.PromoCode_Management;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace PromoCodeFactory.Infrastructure
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -16,8 +26,8 @@ namespace PromoCodeFactory.Infrastructure
             services.AddScoped<IRepository<Role>, EfRepository<Role>>();
             services.AddScoped<IRepository<Preference>, EfRepository<Preference>>();
             services.AddScoped<IRepository<Customer>, EfRepository<Customer>>();
-            services.AddScoped<IRepository<Promocode>, EfRepository<Promocode>>();
-            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<IRepository<PromoCode>, EfRepository<PromoCode>>();
+            
 
 
             services.AddSwaggerGen(c =>
@@ -31,33 +41,35 @@ namespace PromoCodeFactory.Infrastructure
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
+            
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                }
+                else
+                {
+                    app.UseHsts();
+                }
 
 
 
-            app.UseSwagger();
-            app.UseSwaggerUI(x =>
-            {
-                x.SwaggerEndpoint("/swagger/v1/swagger.json", "PromoCode Factory API Doc V1");
-                x.DefaultModelsExpandDepth(-1);
-                x.DocExpansion(DocExpansion.List);
-            });
+                app.UseSwagger();
+                app.UseSwaggerUI(x =>
+                {
+                    x.SwaggerEndpoint("/swagger/v1/swagger.json", "PromoCode Factory API Doc V1");
+                    x.DefaultModelsExpandDepth(-1);
+                    x.DocExpansion(DocExpansion.List);
+                });
 
-            app.UseHttpsRedirection();
+                app.UseHttpsRedirection();
 
-            app.UseRouting();
+                app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });
+            
         }
     }
 }

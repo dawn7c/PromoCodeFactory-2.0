@@ -1,0 +1,6 @@
+@PromoCodeFactory.Infrastructure_HostAddress = http://localhost:5225
+
+GET {{PromoCodeFactory.Infrastructure_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
