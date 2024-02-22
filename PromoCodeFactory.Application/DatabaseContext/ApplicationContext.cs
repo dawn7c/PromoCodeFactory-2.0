@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PromoCodeFactory.Application.Configuration;
 using PromoCodeFactory.Domain.Models.Administration;
 using PromoCodeFactory.Domain.Models.PromoCode_Management;
 using System;
@@ -22,6 +23,16 @@ namespace PromoCodeFactory.Application.DatabaseContext
                 : base(options)
         {
             Database.EnsureCreated();
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new CustomerConfiguration());
+            builder.ApplyConfiguration(new CustomerPreferenceConfiguration());
+            builder.ApplyConfiguration(new EmployeeConfiguration());
+            builder.ApplyConfiguration(new PreferenceConfiguration());
+            builder.ApplyConfiguration(new PromoCodeConfiguration()); 
+            builder.ApplyConfiguration(new RoleConfiguration()); 
         }
     }
 }
