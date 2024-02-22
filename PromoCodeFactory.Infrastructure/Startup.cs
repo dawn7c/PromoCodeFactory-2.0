@@ -26,6 +26,7 @@ namespace PromoCodeFactory.Infrastructure
             services.AddScoped<IRepository<Role>, EfRepository<Role>>();
             services.AddScoped<IRepository<Preference>, EfRepository<Preference>>();
             services.AddScoped<IRepository<Customer>, EfRepository<Customer>>();
+           // services.AddScoped<IRepository<CustomerPreference>, EfRepository<CustomerPreference>>();
             services.AddScoped<IRepository<PromoCode>, EfRepository<PromoCode>>();
             
 
