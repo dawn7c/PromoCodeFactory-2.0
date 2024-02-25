@@ -22,17 +22,17 @@ namespace PromoCodeFactory.Application.DatabaseContext
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
                 : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new CustomerConfiguration());
-            builder.ApplyConfiguration(new CustomerPreferenceConfiguration());
-            builder.ApplyConfiguration(new EmployeeConfiguration());
-            builder.ApplyConfiguration(new PreferenceConfiguration());
-            builder.ApplyConfiguration(new PromoCodeConfiguration()); 
-            builder.ApplyConfiguration(new RoleConfiguration()); 
+            //builder.ApplyConfiguration(new CustomerConfiguration());
+            //builder.ApplyConfiguration(new CustomerPreferenceConfiguration());
+            //builder.ApplyConfiguration(new EmployeeConfiguration());
+            //builder.ApplyConfiguration(new PreferenceConfiguration());
+            //builder.ApplyConfiguration(new PromoCodeConfiguration());
+            //builder.ApplyConfiguration(new RoleConfiguration());
         }
     }
 }

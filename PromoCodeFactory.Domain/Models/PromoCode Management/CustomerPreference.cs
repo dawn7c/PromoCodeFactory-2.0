@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PromoCodeFactory.Domain.Models.PromoCode_Management
 {
-    public class CustomerPreference
+    public class CustomerPreference : BaseEntity
     {
         public Guid CustomerId { get; set; }
         public Guid PreferenceId { get; set; }

@@ -21,14 +21,15 @@ namespace PromoCodeFactory.Infrastructure
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 
-            services.AddScoped<IRepository<Employee>, EfRepository<Employee>>();
-            services.AddScoped<IRepository<Role>, EfRepository<Role>>();
-            services.AddScoped<IRepository<Preference>, EfRepository<Preference>>();
-            services.AddScoped<IRepository<Customer>, EfRepository<Customer>>();
-           // services.AddScoped<IRepository<CustomerPreference>, EfRepository<CustomerPreference>>();
-            services.AddScoped<IRepository<PromoCode>, EfRepository<PromoCode>>();
-            
+            // services.AddScoped<IRepository<Employee>, EfRepository<Employee>>();
+            // services.AddScoped<IRepository<Role>, EfRepository<Role>>();
+            // services.AddScoped<IRepository<Preference>, EfRepository<Preference>>();
+            // services.AddScoped<IRepository<Customer>, EfRepository<Customer>>();
+            //// services.AddScoped<IRepository<CustomerPreference>, EfRepository<CustomerPreference>>();
+            // services.AddScoped<IRepository<PromoCode>, EfRepository<PromoCode>>();
+
 
 
             services.AddSwaggerGen(c =>
