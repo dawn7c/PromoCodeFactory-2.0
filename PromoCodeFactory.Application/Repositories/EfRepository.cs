@@ -73,14 +73,5 @@ namespace PromoCodeFactory.Application.Repositories
                 return true;
             });
         }
-
-        public async Task<Employee> GetEmployeeByIdAsync(Guid employeeId)
-        {
-            return await _context.Employees
-                .Include(e => e.Role)
-                .FirstOrDefaultAsync(e => e.Id == employeeId);
-        }
-
-
     }
 }

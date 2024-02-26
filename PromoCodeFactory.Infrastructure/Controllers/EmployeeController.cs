@@ -34,18 +34,8 @@ namespace PromoCodeFactory.Infrastructure.Controllers
         public async Task<IActionResult> EmployeeAddAsync(EmployeeCreateRequest employeeRequest)
         {
             var employeeId = Guid.NewGuid();
-            var roleId = Guid.NewGuid();
-
-            // Создаем роль
-            var role = new Role()
-            {
-                Id = roleId, // Указываем Id роли
-                Name = "Роль 3",
-                Description = "Сотрудник"
-            };
-
-            // Добавляем роль в базу данных
-            await _roleRepository.AddAsync(role);
+            
+            var roleId = _context.Roles.Where(e => e.Description == "Сотрудник").FirstOrDefault().Id;
 
             // Создаем сотрудника
             var employee = new Employee()
@@ -57,10 +47,19 @@ namespace PromoCodeFactory.Infrastructure.Controllers
                 RoleId = roleId 
             };
 
-            await _employeeRepository.GetEmployeeByIdAsync(employeeId);
             // Добавляем сотрудника в базу данных
             await _employeeRepository.AddAsync(employee);
+            return Ok();
+        }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteEmployee(Guid id)
+        {
+            var customer = await _employeeRepository.GetByIdAsync(id);
+            if (customer is null)
+                return NotFound("Сотрудник не найден.");
+
+            await _employeeRepository.RemoveAsync(customer);
             return Ok();
         }
 
