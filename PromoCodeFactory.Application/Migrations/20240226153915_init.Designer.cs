@@ -12,7 +12,7 @@ using PromoCodeFactory.Application.DatabaseContext;
 namespace PromoCodeFactory.Application.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240225153731_init")]
+    [Migration("20240226153915_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -30,9 +30,6 @@ namespace PromoCodeFactory.Application.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AppliedPromocodesCount")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -98,25 +95,28 @@ namespace PromoCodeFactory.Application.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("PromoCodeFactory.Domain.Models.PromoCode_Management.CustomerPreference", b =>
+            modelBuilder.Entity("PromoCodeFactory.Domain.Models.PromoCode_Management.Partner", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CustomerId")
+                    b.Property<Guid>("PartnerManagerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("PreferenceId")
+                    b.Property<string>("PartnerName")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<Guid>("PromoCodeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("PartnerManagerId");
 
-                    b.HasIndex("PreferenceId");
-
-                    b.ToTable("CustomerPreferences");
+                    b.ToTable("Partners");
                 });
 
             modelBuilder.Entity("PromoCodeFactory.Domain.Models.PromoCode_Management.Preference", b =>
@@ -125,11 +125,16 @@ namespace PromoCodeFactory.Application.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Preferences");
                 });
@@ -154,13 +159,8 @@ namespace PromoCodeFactory.Application.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("PartnerManagerId")
+                    b.Property<Guid?>("PartnerId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("PartnerName")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
 
                     b.Property<Guid>("PreferenceId")
                         .HasColumnType("uniqueidentifier");
@@ -174,7 +174,7 @@ namespace PromoCodeFactory.Application.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("PartnerManagerId");
+                    b.HasIndex("PartnerId");
 
                     b.HasIndex("PreferenceId");
 
@@ -192,23 +192,22 @@ namespace PromoCodeFactory.Application.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("PromoCodeFactory.Domain.Models.PromoCode_Management.CustomerPreference", b =>
+            modelBuilder.Entity("PromoCodeFactory.Domain.Models.PromoCode_Management.Partner", b =>
                 {
-                    b.HasOne("PromoCodeFactory.Domain.Models.PromoCode_Management.Customer", "Customer")
-                        .WithMany("Preferences")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PromoCodeFactory.Domain.Models.PromoCode_Management.Preference", "Preference")
+                    b.HasOne("PromoCodeFactory.Domain.Models.Administration.Employee", "PartnerManager")
                         .WithMany()
-                        .HasForeignKey("PreferenceId")
+                        .HasForeignKey("PartnerManagerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("PartnerManager");
+                });
 
-                    b.Navigation("Preference");
+            modelBuilder.Entity("PromoCodeFactory.Domain.Models.PromoCode_Management.Preference", b =>
+                {
+                    b.HasOne("PromoCodeFactory.Domain.Models.PromoCode_Management.Customer", null)
+                        .WithMany("Preferences")
+                        .HasForeignKey("CustomerId");
                 });
 
             modelBuilder.Entity("PromoCodeFactory.Domain.Models.PromoCode_Management.PromoCode", b =>
@@ -219,11 +218,9 @@ namespace PromoCodeFactory.Application.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PromoCodeFactory.Domain.Models.Administration.Employee", "PartnerManager")
-                        .WithMany()
-                        .HasForeignKey("PartnerManagerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("PromoCodeFactory.Domain.Models.PromoCode_Management.Partner", null)
+                        .WithMany("PromoCodes")
+                        .HasForeignKey("PartnerId");
 
                     b.HasOne("PromoCodeFactory.Domain.Models.PromoCode_Management.Preference", "Preference")
                         .WithMany()
@@ -233,8 +230,6 @@ namespace PromoCodeFactory.Application.Migrations
 
                     b.Navigation("Customer");
 
-                    b.Navigation("PartnerManager");
-
                     b.Navigation("Preference");
                 });
 
@@ -242,6 +237,11 @@ namespace PromoCodeFactory.Application.Migrations
                 {
                     b.Navigation("Preferences");
 
+                    b.Navigation("PromoCodes");
+                });
+
+            modelBuilder.Entity("PromoCodeFactory.Domain.Models.PromoCode_Management.Partner", b =>
+                {
                     b.Navigation("PromoCodes");
                 });
 #pragma warning restore 612, 618

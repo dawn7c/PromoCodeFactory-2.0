@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PromoCodeFactory.Domain.Models.Administration;
+using PromoCodeFactory.Domain.Models.PromoCode_Management;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,33 +9,33 @@ using System.Threading.Tasks;
 
 namespace PromoCodeFactory.Application.Configuration
 {
-    public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
+    public class PartnerConfiguration : IEntityTypeConfiguration<Partner>
     {
-        public void Configure(EntityTypeBuilder<Employee> builder)
+        public void Configure(EntityTypeBuilder<Partner> builder)
         {
             builder
-                .ToTable("Employees")
+                .ToTable("Partners")
                 .HasKey(x => x.Id);
 
             builder
-                .Property(x => x.FirstName)
+                .Property(x => x.PartnerName)
+                .IsRequired()
+                .HasMaxLength(15);
+
+            builder
+                .Property(x => x.PartnerManager)
                 .IsRequired()
                 .HasMaxLength(100);
 
             builder
-                .Property(x => x.LastName)
+                .Property(x => x.PartnerManagerId)
                 .IsRequired()
                 .HasMaxLength(100);
-
             builder
-                .Property(x => x.Email)
-                .IsRequired()
-                .HasMaxLength(100);
-
-            builder
-                .HasOne(x => x.Role)
+                .HasOne(x => x.PromoCodes)
                 .WithMany()
-                .HasForeignKey(x => x.RoleId);
+                .HasForeignKey(x => x.PromoCodeId);
+                
         }
     }
 }

@@ -26,18 +26,6 @@ namespace PromoCodeFactory.Application.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Preferences",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Preferences", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -51,28 +39,21 @@ namespace PromoCodeFactory.Application.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomerPreferences",
+                name: "Preferences",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PreferenceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerPreferences", x => x.Id);
+                    table.PrimaryKey("PK_Preferences", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CustomerPreferences_Customers_CustomerId",
+                        name: "FK_Preferences_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CustomerPreferences_Preferences_PreferenceId",
-                        column: x => x.PreferenceId,
-                        principalTable: "Preferences",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -83,8 +64,7 @@ namespace PromoCodeFactory.Application.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AppliedPromocodesCount = table.Column<int>(type: "int", nullable: false)
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,6 +78,26 @@ namespace PromoCodeFactory.Application.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Partners",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PartnerName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    PartnerManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PromoCodeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Partners", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Partners_Employees_PartnerManagerId",
+                        column: x => x.PartnerManagerId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PromoCode",
                 columns: table => new
                 {
@@ -106,10 +106,9 @@ namespace PromoCodeFactory.Application.Migrations
                     ServiceInfo = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     BeginDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PartnerName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    PartnerManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PreferenceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PartnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -121,11 +120,10 @@ namespace PromoCodeFactory.Application.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PromoCode_Employees_PartnerManagerId",
-                        column: x => x.PartnerManagerId,
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_PromoCode_Partners_PartnerId",
+                        column: x => x.PartnerId,
+                        principalTable: "Partners",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_PromoCode_Preferences_PreferenceId",
                         column: x => x.PreferenceId,
@@ -135,19 +133,19 @@ namespace PromoCodeFactory.Application.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomerPreferences_CustomerId",
-                table: "CustomerPreferences",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CustomerPreferences_PreferenceId",
-                table: "CustomerPreferences",
-                column: "PreferenceId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Employees_RoleId",
                 table: "Employees",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Partners_PartnerManagerId",
+                table: "Partners",
+                column: "PartnerManagerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Preferences_CustomerId",
+                table: "Preferences",
+                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PromoCode_CustomerId",
@@ -155,9 +153,9 @@ namespace PromoCodeFactory.Application.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PromoCode_PartnerManagerId",
+                name: "IX_PromoCode_PartnerId",
                 table: "PromoCode",
-                column: "PartnerManagerId");
+                column: "PartnerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PromoCode_PreferenceId",
@@ -169,19 +167,19 @@ namespace PromoCodeFactory.Application.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CustomerPreferences");
-
-            migrationBuilder.DropTable(
                 name: "PromoCode");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "Partners");
+
+            migrationBuilder.DropTable(
+                name: "Preferences");
 
             migrationBuilder.DropTable(
                 name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "Preferences");
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Roles");

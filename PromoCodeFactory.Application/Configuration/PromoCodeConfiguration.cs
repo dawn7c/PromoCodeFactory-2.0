@@ -30,18 +30,11 @@ namespace PromoCodeFactory.Application.Configuration
                 .Property(x => x.EndDate)
                 .IsRequired();
 
-            builder
-                .Property(x => x.PartnerName)
-                .IsRequired()
-                .HasMaxLength(100);
-
-            builder
-                .HasOne(x => x.PartnerManager)
-                .WithMany();
 
             builder
                 .HasOne(x => x.Preference)
                 .WithMany();
+                
         }
     }
 }

@@ -32,10 +32,10 @@ namespace PromoCodeFactory.Application.Configuration
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder
-                .HasMany(x => x.Preferences)
-                .WithOne(x => x.Customer)
-                .HasForeignKey(x => x.CustomerId);
+            //builder
+            //    .HasMany(x => x.Preferences)
+            //   // .WithOne(x => x.Customer)
+            //    .HasForeignKey(x => x.CustomerId);
 
             builder
                 .HasMany(x => x.PromoCodes)

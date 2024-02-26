@@ -37,7 +37,6 @@ namespace PromoCodeFactory.Infrastructure.Controllers
                 Code = x.Code,
                 BeginDate = x.BeginDate.ToString("yyyy-MM-dd"),
                 EndDate = x.EndDate.ToString("yyyy-MM-dd"),
-                PartnerName = x.PartnerName,
                 ServiceInfo = x.ServiceInfo
             }).ToList();
 

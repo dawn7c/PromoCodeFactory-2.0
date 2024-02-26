@@ -40,8 +40,6 @@ namespace PromoCodeFactory.Infrastructure.Controllers
                 FirstName = customerRequest.FirstName,
                 LastName = customerRequest.LastName,
                 Email = customerRequest.Email
-                //Preferences = _context.CustomerPreferences.Where(e=> e.PreferenceId == customerRequest.PreferenceId).ToList()
-                /*Preferences = customerRequest.PreferenceIds.Select(p => new CustomerPreference { PreferenceName = p }).ToList()*/,
             };
             await _customerRepository.AddAsync(customer);
             return Ok();
