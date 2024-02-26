@@ -1,4 +1,5 @@
 ﻿using PromoCodeFactory.Domain.Models;
+using PromoCodeFactory.Domain.Models.Administration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,6 @@ namespace PromoCodeFactory.Domain.Abstractions
         Task AddAsync(T entity);
         Task RemoveAsync(T entity);
         Task<bool> UpdateAsync(T entity);
+        Task<Employee> GetEmployeeByIdAsync(Guid employeeId);
     }
 }

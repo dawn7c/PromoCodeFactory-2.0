@@ -2,6 +2,7 @@
 using PromoCodeFactory.Application.DatabaseContext;
 using PromoCodeFactory.Domain.Abstractions;
 using PromoCodeFactory.Domain.Models;
+using PromoCodeFactory.Domain.Models.Administration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,6 +72,13 @@ namespace PromoCodeFactory.Application.Repositories
                 _context.SaveChanges();
                 return true;
             });
+        }
+
+        public async Task<Employee> GetEmployeeByIdAsync(Guid employeeId)
+        {
+            return await _context.Employees
+                .Include(e => e.Role)
+                .FirstOrDefaultAsync(e => e.Id == employeeId);
         }
 
 
