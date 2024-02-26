@@ -20,6 +20,13 @@ namespace PromoCodeFactory.Application.Repositories
             _context = context;
             _dbSet = _context.Set<T>();
         }
+
+        public async Task AddAsync(T entity)
+        {
+            _dbSet.Add(entity);
+            await _context.SaveChangesAsync().ConfigureAwait(false); ;
+        }
+
         public IQueryable<T> GetAll()
         {
             return _dbSet.AsQueryable();
@@ -41,5 +48,31 @@ namespace PromoCodeFactory.Application.Repositories
             entity = _dbSet.Find(id);
             return entity != null;
         }
+
+        public async Task RemoveAsync(T entity)
+        {
+            _dbSet.Remove(entity);
+            await _context.SaveChangesAsync().ConfigureAwait(false);
+        }
+        public async Task<T> GetByIdAsync(Guid id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
+        public async Task<bool> UpdateAsync(T entity)
+        {
+            return await Task.Run(() =>
+            {
+                if (!IsExist(entity.Id, out _))
+                {
+                    return false;
+                }
+                _dbSet.Update(entity);
+                _context.SaveChanges();
+                return true;
+            });
+        }
+
+
     }
 }
