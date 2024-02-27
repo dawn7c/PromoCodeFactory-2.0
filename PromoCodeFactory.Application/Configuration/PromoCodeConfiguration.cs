@@ -30,7 +30,6 @@ namespace PromoCodeFactory.Application.Configuration
                 .Property(x => x.EndDate)
                 .IsRequired();
 
-
             builder
                 .HasOne(x => x.Preference)
                 .WithMany();

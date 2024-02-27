@@ -32,8 +32,13 @@ namespace PromoCodeFactory.Infrastructure.Controllers
         [HttpPost]
         public async Task<IActionResult> CustomerAddAsync(CustomerCreateRequest customerRequest)
         {
-            var customerId = Guid.NewGuid();
+            var existingCustomer = _context.Customers.FirstOrDefault(c => c.Email == customerRequest.Email);
+            if (existingCustomer != null)
+            {
+                return BadRequest("Клиент с такими данными уже существует");
+            }
 
+            var customerId = Guid.NewGuid();
             var customer = new Customer()
             {
                 Id = customerId,

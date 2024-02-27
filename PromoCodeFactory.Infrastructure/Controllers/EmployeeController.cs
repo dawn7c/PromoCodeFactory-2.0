@@ -33,7 +33,15 @@ namespace PromoCodeFactory.Infrastructure.Controllers
         [HttpPost]
         public async Task<IActionResult> EmployeeAddAsync(EmployeeCreateRequest employeeRequest, string roleDescription)
         {
-            
+            var existingEmployee = _context.Employees.FirstOrDefault(e =>                                    
+                                                                            e.FirstName == employeeRequest.FirstName &&
+                                                                            e.LastName == employeeRequest.LastName &&
+                                                                            e.Email == employeeRequest.Email);
+
+            if (existingEmployee != null)
+            {
+                return BadRequest("Сотрудник с такими данными уже существует");
+            }
             var role = _context.Roles.Where(e => e.Description == roleDescription).FirstOrDefault();
 
             if (role == null)

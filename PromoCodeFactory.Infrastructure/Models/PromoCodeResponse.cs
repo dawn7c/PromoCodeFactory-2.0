@@ -12,5 +12,13 @@ namespace PromoCodeFactory.Infrastructure.Models
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; set; }
         public string PartnerName { get; set; }
+        public string namePreference {  get; set; }
+        public Guid PartnerId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; } 
+        public string FullName => $"{FirstName} {LastName}";
+
+        //public string partnerName { get; set; }
+
     }
 }

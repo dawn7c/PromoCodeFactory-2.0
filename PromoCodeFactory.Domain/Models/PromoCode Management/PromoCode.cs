@@ -21,6 +21,7 @@ namespace PromoCodeFactory.Domain.Models.PromoCode_Management
         public Guid PreferenceId {  get; set; }
         public Customer Customer { get; set; }
         public  Guid CustomerId { get; set; }
+        public Partner Partner { get; set; }
         public Guid PartnerId { get; set; }
 
        

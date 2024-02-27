@@ -44,12 +44,19 @@ namespace PromoCodeFactory.Infrastructure.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PromoCodeAddAsync(PromoCodeResponse promoResponse, string namePref, string partnerName)
+        public async Task<IActionResult> PromoCodeAddAsync(PromoCodeResponse promoResponse)
         {
-            var promoCodePreference = _context.Preferences.FirstOrDefault(e => e.Name == namePref);
-            var partner = _context.Partners.FirstOrDefault(e => e.PartnerName == partnerName);
-            var promoCodeId = Guid.NewGuid();
+            var promoCodePreference = _context.Preferences.FirstOrDefault(e => e.Name == promoResponse.namePreference);
+            if (promoCodePreference == null)
+                return BadRequest("Предпочтение не найдено");
+            var partner = _context.Partners.FirstOrDefault(e => e.PartnerName == promoResponse.PartnerName);
+            if (partner == null)
+                return BadRequest("Партнер не найден");
+            var customer = _context.Customers.AsEnumerable().FirstOrDefault(e => e.FullName == promoResponse.FullName) ?? _context.Customers.FirstOrDefault();
+            if (customer == null)
+                return BadRequest("Клиент не найден");
 
+            var promoCodeId = Guid.NewGuid();
             var promoCode = new PromoCode()
             {
                 Id = promoCodeId,
@@ -57,7 +64,9 @@ namespace PromoCodeFactory.Infrastructure.Controllers
                 ServiceInfo = promoResponse.ServiceInfo,
                 BeginDate = promoResponse.BeginDate,
                 EndDate = promoResponse.EndDate,
-                
+                PartnerId = partner.Id,
+                PreferenceId = promoCodePreference.Id,
+                CustomerId = customer.Id
             };
 
             await _promoCodeRepository.AddAsync(promoCode);

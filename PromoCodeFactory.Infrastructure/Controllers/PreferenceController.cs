@@ -30,6 +30,9 @@ namespace PromoCodeFactory.Infrastructure.Controllers
         [HttpPost]
         public async Task<IActionResult> PreferenceAddAsync(PreferenceRequest prefRequest)
         {
+            if (_context.Preferences.Any(p => p.Name == prefRequest.Name))
+                return BadRequest("Данное предпочтение уже существует в БД");
+            
             var prefId = Guid.NewGuid();
             var preference = new Preference()
             {

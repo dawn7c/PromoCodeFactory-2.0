@@ -35,7 +35,7 @@ namespace PromoCodeFactory.Application.Configuration
             //    .HasOne(x => x.PromoCodes)
             //    .WithMany()
             //    .HasForeignKey(x => x.PromoCodeId);
-                
+
         }
     }
 }
