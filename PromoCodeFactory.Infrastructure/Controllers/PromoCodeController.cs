@@ -18,7 +18,7 @@ namespace PromoCodeFactory.Infrastructure.Controllers
         private readonly IRepository<Preference> _preferencesRepository;
         private readonly IRepository<Customer> _customersRepository;
 
-        public PromoCodeController (ApplicationContext context, IRepository<PromoCode> promoCodeRepository, IRepository<Preference> preferencesRepository, IRepository<Customer> customersRepository)
+        public PromoCodeController(ApplicationContext context, IRepository<PromoCode> promoCodeRepository, IRepository<Preference> preferencesRepository, IRepository<Customer> customersRepository)
         {
             _context = context;
             _promoCodeRepository = promoCodeRepository;
@@ -35,18 +35,33 @@ namespace PromoCodeFactory.Infrastructure.Controllers
             {
                 Id = x.Id,
                 Code = x.Code,
-                BeginDate = x.BeginDate.ToString("yyyy-MM-dd"),
-                EndDate = x.EndDate.ToString("yyyy-MM-dd"),
+                BeginDate = x.BeginDate,
+                EndDate = x.EndDate,
                 ServiceInfo = x.ServiceInfo
             }).ToList();
 
             return Ok(response);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> PromoCodeAddAsync(GivePromoCodeRequest promoRequest)
-        //{
-            
-        //}
+        [HttpPost]
+        public async Task<IActionResult> PromoCodeAddAsync(PromoCodeResponse promoResponse, string namePref, string partnerName)
+        {
+            var promoCodePreference = _context.Preferences.FirstOrDefault(e => e.Name == namePref);
+            var partner = _context.Partners.FirstOrDefault(e => e.PartnerName == partnerName);
+            var promoCodeId = Guid.NewGuid();
+
+            var promoCode = new PromoCode()
+            {
+                Id = promoCodeId,
+                Code = promoResponse.Code,
+                ServiceInfo = promoResponse.ServiceInfo,
+                BeginDate = promoResponse.BeginDate,
+                EndDate = promoResponse.EndDate,
+                
+            };
+
+            await _promoCodeRepository.AddAsync(promoCode);
+            return Ok();
+        }
     }
 }

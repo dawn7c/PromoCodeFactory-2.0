@@ -31,10 +31,10 @@ namespace PromoCodeFactory.Application.Configuration
                 .Property(x => x.PartnerManagerId)
                 .IsRequired()
                 .HasMaxLength(100);
-            builder
-                .HasOne(x => x.PromoCodes)
-                .WithMany()
-                .HasForeignKey(x => x.PromoCodeId);
+            //builder
+            //    .HasOne(x => x.PromoCodes)
+            //    .WithMany()
+            //    .HasForeignKey(x => x.PromoCodeId);
                 
         }
     }

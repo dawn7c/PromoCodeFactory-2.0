@@ -31,20 +31,24 @@ namespace PromoCodeFactory.Infrastructure.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EmployeeAddAsync(EmployeeCreateRequest employeeRequest)
+        public async Task<IActionResult> EmployeeAddAsync(EmployeeCreateRequest employeeRequest, string roleDescription)
         {
-            var employeeId = Guid.NewGuid();
             
-            var roleId = _context.Roles.Where(e => e.Description == "Сотрудник").FirstOrDefault().Id;
+            var role = _context.Roles.Where(e => e.Description == roleDescription).FirstOrDefault();
 
+            if (role == null)
+            {
+                return BadRequest("Роль не найдена");
+            }
             // Создаем сотрудника
+            var employeeId = Guid.NewGuid();
             var employee = new Employee()
             {
                 Id = employeeId,
                 FirstName = employeeRequest.FirstName,
                 LastName = employeeRequest.LastName,
                 Email = employeeRequest.Email,
-                RoleId = roleId 
+                RoleId = role.Id 
             };
 
             // Добавляем сотрудника в базу данных

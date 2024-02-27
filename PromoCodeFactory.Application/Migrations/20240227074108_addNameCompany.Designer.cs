@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PromoCodeFactory.Application.DatabaseContext;
 
@@ -11,9 +12,11 @@ using PromoCodeFactory.Application.DatabaseContext;
 namespace PromoCodeFactory.Application.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240227074108_addNameCompany")]
+    partial class addNameCompany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,6 +113,9 @@ namespace PromoCodeFactory.Application.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<Guid>("PromoCodeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PartnerManagerId");
@@ -157,7 +163,7 @@ namespace PromoCodeFactory.Application.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("PartnerId")
+                    b.Property<Guid?>("PartnerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PreferenceId")
@@ -218,9 +224,7 @@ namespace PromoCodeFactory.Application.Migrations
 
                     b.HasOne("PromoCodeFactory.Domain.Models.PromoCode_Management.Partner", null)
                         .WithMany("PromoCodes")
-                        .HasForeignKey("PartnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PartnerId");
 
                     b.HasOne("PromoCodeFactory.Domain.Models.PromoCode_Management.Preference", "Preference")
                         .WithMany()
