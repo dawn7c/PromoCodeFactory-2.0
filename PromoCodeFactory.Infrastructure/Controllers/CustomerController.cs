@@ -36,14 +36,7 @@ namespace PromoCodeFactory.Infrastructure.Controllers
                 return BadRequest("Клиент с такими данными уже существует");
             }
 
-            var customerId = Guid.NewGuid();
-            var customer = new Customer()
-            {
-                Id = customerId,
-                FirstName = customerRequest.FirstName,
-                LastName = customerRequest.LastName,
-                Email = customerRequest.Email
-            };
+            var customer = new Customer(customerRequest.FirstName, customerRequest.LastName, customerRequest.Email);
             await _customerRepository.AddAsync(customer);
             return Ok();
         }

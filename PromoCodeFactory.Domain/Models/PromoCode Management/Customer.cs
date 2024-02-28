@@ -9,5 +9,14 @@
         public virtual ICollection<PromoCode> PromoCodes { get; set; } = new List<PromoCode>();
         public List<Preference> Preferences { get; set; }
 
+        
+
+        public Customer(string firstName, string lastName, string email)
+        {
+            Id = Guid.NewGuid();
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+        }
     }
 }

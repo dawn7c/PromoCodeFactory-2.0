@@ -21,13 +21,5 @@ namespace PromoCodeFactory.Application.DatabaseContext
             
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            builder.ApplyConfiguration(new CustomerConfiguration());
-            builder.ApplyConfiguration(new EmployeeConfiguration());
-            builder.ApplyConfiguration(new PreferenceConfiguration());
-            builder.ApplyConfiguration(new PromoCodeConfiguration());
-            builder.ApplyConfiguration(new RoleConfiguration());
-        }
     }
 }

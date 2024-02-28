@@ -40,9 +40,6 @@ namespace PromoCodeFactory.Infrastructure
                 {
                     app.UseHsts();
                 }
-
-
-
                 app.UseSwagger();
                 app.UseSwaggerUI(x =>
                 {
