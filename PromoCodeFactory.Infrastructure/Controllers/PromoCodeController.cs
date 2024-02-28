@@ -28,17 +28,7 @@ namespace PromoCodeFactory.Infrastructure.Controllers
         public async Task<IActionResult> PromoCodesGetAllAsync()
         {
             var preferences = await _promoCodeRepository.GetAllAsync();
-
-            var response = preferences.Select(x => new PromoCodeResponse()
-            {
-                Id = x.Id,
-                Code = x.Code,
-                BeginDate = x.BeginDate,
-                EndDate = x.EndDate,
-                ServiceInfo = x.ServiceInfo
-            }).ToList();
-
-            return Ok(response);
+            return Ok(preferences);
         }
 
         [HttpPost]
@@ -47,26 +37,17 @@ namespace PromoCodeFactory.Infrastructure.Controllers
             var promoCodePreference = _context.Preferences.FirstOrDefault(e => e.Name == promoResponse.namePreference);
             if (promoCodePreference == null)
                 return BadRequest("Предпочтение не найдено");
+
             var partner = _context.Partners.FirstOrDefault(e => e.PartnerName == promoResponse.PartnerName);
             if (partner == null)
                 return BadRequest("Партнер не найден");
+
             var customer = _context.Customers.AsEnumerable().FirstOrDefault(e => e.FullName == promoResponse.FullName) ?? _context.Customers.FirstOrDefault();
             if (customer == null)
                 return BadRequest("Клиент не найден");
 
-            var promoCodeId = Guid.NewGuid();
-            var promoCode = new PromoCode()
-            {
-                Id = promoCodeId,
-                Code = promoResponse.Code,
-                ServiceInfo = promoResponse.ServiceInfo,
-                BeginDate = promoResponse.BeginDate,
-                EndDate = promoResponse.EndDate,
-                PartnerId = partner.Id,
-                PreferenceId = promoCodePreference.Id,
-                CustomerId = customer.Id
-            };
-
+            var promoCode = new PromoCode(promoResponse.Code, promoResponse.ServiceInfo, promoResponse.BeginDate, promoResponse.EndDate, partner.Id, promoCodePreference.Id, customer.Id);
+            
             await _promoCodeRepository.AddAsync(promoCode);
             return Ok();
         }

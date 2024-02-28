@@ -16,7 +16,7 @@ namespace PromoCodeFactory.Application.Configuration
             builder
                 .Property(x => x.Name)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(100);
 
             builder
                 .Property(x => x.Description)

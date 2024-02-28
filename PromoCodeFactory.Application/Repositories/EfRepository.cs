@@ -57,16 +57,13 @@ namespace PromoCodeFactory.Application.Repositories
 
         public async Task<bool> UpdateAsync(T entity)
         {
-            return await Task.Run(() =>
+            if (!IsExist(entity.Id, out _))
             {
-                if (!IsExist(entity.Id, out _))
-                {
-                    return false;
-                }
-                _dbSet.Update(entity);
-                _context.SaveChanges();
-                return true;
-            });
+                return false;
+            }
+            _dbSet.Update(entity);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

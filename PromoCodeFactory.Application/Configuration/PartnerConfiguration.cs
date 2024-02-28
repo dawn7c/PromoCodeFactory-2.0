@@ -16,7 +16,7 @@ namespace PromoCodeFactory.Application.Configuration
             builder
                 .Property(x => x.PartnerName)
                 .IsRequired()
-                .HasMaxLength(15);
+                .HasMaxLength(100);
 
             builder
                 .Property(x => x.PartnerManager)

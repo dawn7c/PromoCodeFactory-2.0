@@ -13,11 +13,13 @@ namespace PromoCodeFactory.Infrastructure.Controllers
     {
         private readonly ApplicationContext _context;
         private readonly IRepository<Partner> _partnerRepository;
+        private readonly IRepository<Employee> _employeeRepository;
 
-        public PartnerController(ApplicationContext context, IRepository<Partner> partnerRepository)
+        public PartnerController(ApplicationContext context, IRepository<Partner> partnerRepository, IRepository<Employee> employeeRepository)
         {
             _context = context;
             _partnerRepository = partnerRepository;
+            _employeeRepository = employeeRepository;
         }
 
         [HttpGet]
@@ -39,8 +41,32 @@ namespace PromoCodeFactory.Infrastructure.Controllers
             if (partnerManagerRole == null)
                 return BadRequest("Такой партнер не найден");
             
-            var partner = new Partner(request.Company, employee.FirstName + employee.LastName, employee.Id);
+            var partner = new Partner(request.Company, employee.FirstName +" "+ employee.LastName, employee.Id);
             await _partnerRepository.AddAsync(partner);
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> PartnerUpdateAsync([FromBody] PartnerResponse response)
+        {
+            var employee = await _partnerRepository.GetByIdAsync(response.id);
+            if (employee is null)
+                return NotFound("Партнер не найден");
+
+            employee.Company = response.Company;
+            employee.PartnerName = response.PartnerName;
+            await _partnerRepository.UpdateAsync(employee);
+            return Ok();
+            
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> PartnerDeleteAsync(Guid id)
+        {
+            var partner = await _partnerRepository.GetByIdAsync(id);
+            if (partner is null)
+                return NotFound("Партнер не найден");
+             await _partnerRepository.RemoveAsync(partner);
             return Ok();
         }
     }

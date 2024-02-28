@@ -7,7 +7,7 @@ namespace PromoCodeFactory.Domain.Models.PromoCode_Management
         [MaxLength(15)]
         public string Code { get; set; }
 
-        [MaxLength(15)]
+        
         public string ServiceInfo { get; set; }
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -18,6 +18,16 @@ namespace PromoCodeFactory.Domain.Models.PromoCode_Management
         public Partner Partner { get; set; }
         public Guid PartnerId { get; set; }
 
-       
+        public PromoCode(string code, string serviceInfo, DateTime beginDate, DateTime endDate, Guid preferenceId, Guid customerId, Guid partnerId)
+        {
+            Id = Guid.NewGuid();
+            Code = code;
+            ServiceInfo = serviceInfo;
+            BeginDate = beginDate;
+            EndDate = endDate;
+            PreferenceId = preferenceId;
+            CustomerId = customerId;
+            PartnerId = partnerId;
+        }
     }
 }

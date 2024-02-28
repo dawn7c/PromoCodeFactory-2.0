@@ -56,11 +56,25 @@ namespace PromoCodeFactory.Infrastructure.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteEmployee(Guid id)
         {
-            var customer = await _employeeRepository.GetByIdAsync(id);
-            if (customer is null)
+            var employee = await _employeeRepository.GetByIdAsync(id);
+            if (employee is null)
                 return NotFound("Сотрудник не найден.");
 
-            await _employeeRepository.RemoveAsync(customer);
+            await _employeeRepository.RemoveAsync(employee);
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateEmployee([FromBody] EmployeeCreateRequest request)
+        {
+            var employee = await _employeeRepository.GetByIdAsync(request.Id);
+            if (employee is null)
+                return NotFound("Сотрудник не найден");
+
+             employee.FirstName = request.FirstName;
+             employee.LastName = request.LastName;
+             employee.Email = request.Email;
+            await _employeeRepository.UpdateAsync(employee);
             return Ok();
         }
 

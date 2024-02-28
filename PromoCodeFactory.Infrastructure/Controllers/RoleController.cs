@@ -31,15 +31,21 @@ namespace PromoCodeFactory.Infrastructure.Controllers
         [HttpPost]
         public async Task<IActionResult> RoleAddAsync(RoleRequest roleRequest)
         {
-            var roleId = Guid.NewGuid();
-            var role = new Role()
-            {
-                Id = roleId,
-                Name = roleRequest.Name,
-                Description = roleRequest.Description,
-            };
+            var role = new Role(roleRequest.Name, roleRequest.Description);
             await _roleRepository.AddAsync(role);
             return Ok();
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> RoleDeleteAsync(Guid id)
+        {
+            var role = await _roleRepository.GetByIdAsync(id);
+            if (role is null)
+                return NotFound("Роль не найдена");
+            await _roleRepository.RemoveAsync(role);
+            return Ok();
+        }
+
+        
     }
 }
