@@ -27,27 +27,19 @@ namespace PromoCodeFactory.Infrastructure.Controllers
             return Ok(partners);
         }
 
-        // Сделать маппинг, должен записывать данные с Employee, а не вводить руками, дописать Request and Response
+        
         [HttpPost]
-        public async Task<IActionResult> PartnerAddAsync(Guid id, [FromBody] PartnerRequest request)
+        public async Task<IActionResult> PartnerAddAsync([FromBody] PartnerRequest request)
         {
-            var employee = _context.Employees.FirstOrDefault(e => e.Id == id);
+            var employee = _context.Employees.FirstOrDefault(e => e.Id == request.id);
             if (employee == null)
                 return BadRequest("Сотрудник не найден");
+
             var partnerManagerRole = _context.Roles.FirstOrDefault(e => e.Description == "Партнерский менеджер");
-           
             if (partnerManagerRole == null)
-            {
-                
                 return BadRequest("Такой партнер не найден");
-            }
             
-            var partner = new Partner()
-            {
-                Company = request.Company,
-                PartnerName = $"{employee.FirstName} {employee.LastName}",
-                PartnerManagerId = employee.Id
-            };
+            var partner = new Partner(request.Company, employee.FirstName + employee.LastName, employee.Id);
             await _partnerRepository.AddAsync(partner);
             return Ok();
         }

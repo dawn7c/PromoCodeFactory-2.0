@@ -30,7 +30,7 @@ namespace PromoCodeFactory.Infrastructure.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EmployeeAddAsync(EmployeeCreateRequest employeeRequest, string roleDescription)
+        public async Task<IActionResult> EmployeeAddAsync([FromBody]EmployeeCreateRequest employeeRequest)
         {
             var existingEmployee = _context.Employees.FirstOrDefault(e =>                                    
                                                                             e.FirstName == employeeRequest.FirstName &&
@@ -38,25 +38,15 @@ namespace PromoCodeFactory.Infrastructure.Controllers
                                                                             e.Email == employeeRequest.Email);
 
             if (existingEmployee != null)
-            {
                 return BadRequest("Сотрудник с такими данными уже существует");
-            }
-            var role = _context.Roles.Where(e => e.Description == roleDescription).FirstOrDefault();
+            
+            var role = _context.Roles.Where(e => e.Description == employeeRequest.roleDescription).FirstOrDefault();
 
             if (role == null)
-            {
                 return BadRequest("Роль не найдена");
-            }
+            
             // Создаем сотрудника
-            var employeeId = Guid.NewGuid();
-            var employee = new Employee()
-            {
-                Id = employeeId,
-                FirstName = employeeRequest.FirstName,
-                LastName = employeeRequest.LastName,
-                Email = employeeRequest.Email,
-                RoleId = role.Id 
-            };
+            var employee = new Employee(employeeRequest.FirstName, employeeRequest.LastName, employeeRequest.Email, role.Id);
 
             // Добавляем сотрудника в базу данных
             await _employeeRepository.AddAsync(employee);

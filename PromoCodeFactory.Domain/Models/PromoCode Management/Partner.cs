@@ -11,5 +11,12 @@ namespace PromoCodeFactory.Domain.Models.PromoCode_Management
         public Employee PartnerManager { get; set; }
         public Guid PartnerManagerId { get; set; }
         public List<PromoCode> PromoCodes { get; set; }
+
+        public Partner(string company, string partnerName, Guid partnerManagerId)
+        {
+            Company = company;
+            PartnerName = partnerName;
+            PartnerManagerId = partnerManagerId;
+        }
     }
 }
