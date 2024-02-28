@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PromoCodeFactory.Application.DatabaseContext;
 using PromoCodeFactory.Application.Repositories;
 using PromoCodeFactory.Domain.Abstractions;
-using PromoCodeFactory.Domain.Models.Administration;
-using PromoCodeFactory.Domain.Models.PromoCode_Management;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace PromoCodeFactory.Infrastructure

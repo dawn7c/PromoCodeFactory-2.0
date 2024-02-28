@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PromoCodeFactory.Application.DatabaseContext;
 using PromoCodeFactory.Domain.Abstractions;
 using PromoCodeFactory.Domain.Models.Administration;

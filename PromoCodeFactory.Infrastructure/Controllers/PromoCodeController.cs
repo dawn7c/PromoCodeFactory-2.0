@@ -1,11 +1,9 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PromoCodeFactory.Application.DatabaseContext;
 using PromoCodeFactory.Domain.Abstractions;
 using PromoCodeFactory.Domain.Models.PromoCode_Management;
 using PromoCodeFactory.Infrastructure.Models;
-using System.Runtime.CompilerServices;
+
 
 namespace PromoCodeFactory.Infrastructure.Controllers
 {
@@ -27,7 +25,7 @@ namespace PromoCodeFactory.Infrastructure.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PromoCodeResponse>> PromoCodesGetAllAsync()
+        public async Task<IActionResult> PromoCodesGetAllAsync()
         {
             var preferences = await _promoCodeRepository.GetAllAsync();
 

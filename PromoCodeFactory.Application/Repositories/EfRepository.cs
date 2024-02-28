@@ -2,12 +2,7 @@
 using PromoCodeFactory.Application.DatabaseContext;
 using PromoCodeFactory.Domain.Abstractions;
 using PromoCodeFactory.Domain.Models;
-using PromoCodeFactory.Domain.Models.Administration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace PromoCodeFactory.Application.Repositories
 {

@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using PromoCodeFactory.Application.DatabaseContext;
 using PromoCodeFactory.Domain.Abstractions;
 using PromoCodeFactory.Domain.Models.Administration;
-using PromoCodeFactory.Domain.Models.PromoCode_Management;
 using PromoCodeFactory.Infrastructure.Models;
 
 namespace PromoCodeFactory.Infrastructure.Controllers

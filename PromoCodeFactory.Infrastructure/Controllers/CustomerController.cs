@@ -1,6 +1,4 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PromoCodeFactory.Application.DatabaseContext;
 using PromoCodeFactory.Domain.Abstractions;
 using PromoCodeFactory.Domain.Models.PromoCode_Management;
@@ -61,8 +59,8 @@ namespace PromoCodeFactory.Infrastructure.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCustomer(Guid id, CustomerCreateRequest request)
+        [HttpPut]
+        public async Task<IActionResult> UpdateCustomer(Guid id, [FromBody]CustomerCreateRequest request)
         {
          
                 var customer = await _customerRepository.GetByIdAsync(id);
@@ -77,7 +75,6 @@ namespace PromoCodeFactory.Infrastructure.Controllers
                 await _customerRepository.UpdateAsync(customer);
 
                 return Ok();
-            
         }
     }
 }

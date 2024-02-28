@@ -1,8 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using PromoCodeFactory.Application.DatabaseContext;
 using PromoCodeFactory.Infrastructure;
-
 
 public class Program
 {

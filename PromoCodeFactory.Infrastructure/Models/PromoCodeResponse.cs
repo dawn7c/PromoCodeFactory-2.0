@@ -1,7 +1,4 @@
-﻿using PromoCodeFactory.Domain.Models.Administration;
-using PromoCodeFactory.Domain.Models.PromoCode_Management;
-using System.ComponentModel.DataAnnotations;
-
+﻿
 namespace PromoCodeFactory.Infrastructure.Models
 {
     public class PromoCodeResponse
@@ -17,8 +14,6 @@ namespace PromoCodeFactory.Infrastructure.Models
         public string FirstName { get; set; }
         public string LastName { get; set; } 
         public string FullName => $"{FirstName} {LastName}";
-
-        //public string partnerName { get; set; }
 
     }
 }

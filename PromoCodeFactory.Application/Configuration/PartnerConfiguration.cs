@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PromoCodeFactory.Domain.Models.PromoCode_Management;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace PromoCodeFactory.Application.Configuration
 {
@@ -31,11 +27,7 @@ namespace PromoCodeFactory.Application.Configuration
                 .Property(x => x.PartnerManagerId)
                 .IsRequired()
                 .HasMaxLength(100);
-            //builder
-            //    .HasOne(x => x.PromoCodes)
-            //    .WithMany()
-            //    .HasForeignKey(x => x.PromoCodeId);
-
+          
         }
     }
 }
