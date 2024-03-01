@@ -12,6 +12,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0-nanoserver-1809 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["PromoCodeFactory.Infrastructure/PromoCodeFactory.Infrastructure.csproj", "PromoCodeFactory.Infrastructure/"]
+COPY ["PromoCodeFactory.Application/PromoCodeFactory.Application.csproj", "PromoCodeFactory.Application/"]
+COPY ["PromoCodeFactory.Domain/PromoCodeFactory.Domain.csproj", "PromoCodeFactory.Domain/"]
 RUN dotnet restore "./PromoCodeFactory.Infrastructure/./PromoCodeFactory.Infrastructure.csproj"
 COPY . .
 WORKDIR "/src/PromoCodeFactory.Infrastructure"
